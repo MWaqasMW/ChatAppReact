@@ -1,0 +1,16 @@
+.button {
+    width: 100%;
+    padding: 0.7rem 4.5rem;
+    font-size: 0.85rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all .5s ease;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+    background-color: #0a3ef7 !important;
+    color: #fff;
+    text-transform: none;
+}
+
