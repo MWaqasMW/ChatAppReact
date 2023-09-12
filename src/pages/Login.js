@@ -6,9 +6,9 @@ import GoogleBtn from '../componets/GoogleBtn'
 import Btn  from '../componets/Btn';
 import { NavLink , useNavigate } from 'react-router-dom';
 import {  signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from '../config/firebase';
+import { auth ,db} from '../config/firebase';
 import Swal from 'sweetalert2/src/sweetalert2.js'
-
+import { setDoc,doc } from 'firebase/firestore';
 
 
 const Login = () => {
@@ -24,12 +24,12 @@ const navigate = useNavigate();
     console.log(email,password)
     
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async(userCredential) => {
      
       const user = userCredential.user;
       console.log("user",user)
 
-
+ await setDoc(doc(db, "user", user.uid),{})
       navigate('/profile')
     })
     .catch((error) => {
@@ -52,11 +52,19 @@ Swal.fire({
 
 
     signInWithPopup(auth, provider)
-    .then((result) => {
+    .then(async(result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
-      console.log(result)
+
+      await setDoc(doc(db, "user", user.uid), {
+        displayName:user.displayName,
+        phoneNumber:user.phoneNumber,
+        email:user.email,
+        photoURL:user.photoURL,
+        uid:user.uid
+      });
+      await setDoc(doc(db, "userChats", user.uid),{})
       navigate("/profile")
     }).catch((error) => {
       const errorCode = error.code;

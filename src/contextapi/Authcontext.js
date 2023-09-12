@@ -13,9 +13,20 @@ export const AuthContextProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
 const [allUser,setAllUser] = useState([''])
 
+
+
+
+
+
+
+
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (user) => {
             setCurrentUser(user);
+
+
+
+
 
 
 try{
@@ -59,7 +70,7 @@ console.log(err)
     }, []);
     
     return (
-        <AuthContext.Provider value={{ currentUser, userData,allUser }}>
+        <AuthContext.Provider value={{ currentUser, userData,allUser}}>
             {children}
         </AuthContext.Provider>
     );

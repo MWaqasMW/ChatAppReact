@@ -19,8 +19,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 const Profile = () => {
 
 
-  const [err, seterr] = useState([false])
-  const [img, setImg] = useState([""])
+  // const [err, seterr] = useState([false])
 
   const navigate = useNavigate()
   const { currentUser, userData } = useContext(AuthContext)
@@ -29,24 +28,26 @@ const Profile = () => {
   
   const handleUpdate = async (e) => {
     e.preventDefault()
+    let imageUrl;
+    let userName;
+    let userNumber;
     try{
-    
-    const imageUrl = e.target[0].files[0]
-    const userName = e.target[1].value
-    const userNumber = e.target[2].value
-    console.log(imageUrl)
+    if(e.target[0].files[0] === "undefined"  ){
 
-
-
-    if (imageUrl) {
-      setImg(imageUrl);
-
-      // Display the selected image in the <img> element
-      const imgElement = document.getElementById('previewImage');
-      imgElement.src = URL.createObjectURL(imageUrl);
-
+console.log(e.target[0].files[0])
+       imageUrl = imgLogo
+       userName = e.target[1].value
+      userNumber = e.target[2].value
+      console.log(imageUrl)
+    }else{
+     imageUrl = e.target[0].files[0]
+     userName = e.target[1].value
+     userNumber = e.target[2].value
     }
-
+    
+    
+    
+    
 
 
     const storageRef = ref(storage, `images/${imageUrl}`)
@@ -69,6 +70,11 @@ const Profile = () => {
         }
       },
       (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Sorry... Something went wrong!',
+        })
 
         console.log(error);
       },
@@ -85,6 +91,8 @@ const Profile = () => {
                 phoneNumber: userNumber,
                 photoURL: downloadURL,
               })
+
+              
               Swal.fire({
                 icon: 'success',
                 title: 'Your Ptofile Updated',
@@ -125,7 +133,6 @@ const Profile = () => {
   const [number , setNumber] = useState([[phoneNumber ? phoneNumber : (userData && userData.phoneNumber)]])
 
 
-
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -136,8 +143,24 @@ const Profile = () => {
     setNumber(e.target.value)
   }
 
+  const [img, setImg] = useState([null])
+
+const handleChangePhoto=(e)=>{
+  const imgSrc = document.getElementById('showImage');
+  let image =e.target.files[0]
+  if (image) {
+    setImg(image);
+
+    // Display the selected image in the <img> element
+    const imgElement = document.getElementById('previewImage');
+  imgElement.src = URL.createObjectURL(image);
+
+  }
 
 
+  // imgSrc.src = URL.createObjectURL(e.target.files[0]);
+  // setImage(imgSrc.src)
+}
 
 
 
@@ -198,7 +221,7 @@ const Profile = () => {
           <img data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" src={Edit} alt='edit' />
         </div>
         <div className='cardTop'>
-          <img className="card__img" src={photoURL ? photoURL : (userData && userData.photoURL) ? userData.photoURL : imgLogo} alt='img' width={"120px"} />
+          <img className="card__img" src={(userData && userData.photoURL) ? userData.photoURL : imgLogo} alt='img' width={"120px"} />
 
         </div>
         <div className="card__title">{displayName ? displayName : (userData && userData.displayName)}</div>
@@ -228,9 +251,9 @@ const Profile = () => {
             <button type="button" className="btn-close outline-none edit" data-bs-dismiss="modal" aria-label="Close"></button>
             <form onSubmit={handleUpdate} className='card'>
               <div className='cardTop'>
-                <img className="card__img" id='previewImage' src={imgLogo} alt='img' width={"120px"} />
+                <img  className="card__img" id='previewImage' src={imgLogo} alt='img' width={"120px"} />
                 <label htmlFor='file' ><FcCamera /></label>
-                <input type='file' className='d-none' id="file" />
+                <input onChange={handleChangePhoto} type='file' className='d-none' id="file" />
               </div>
 
               <div className="mt-4">

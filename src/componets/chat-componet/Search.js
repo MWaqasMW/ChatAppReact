@@ -5,10 +5,9 @@ import React from 'react'
 
 
 
-
-
 const Search = () => {
  
+
   return (
     <div className='serachBar'>
       <div className='serach'>
@@ -16,7 +15,6 @@ const Search = () => {
       </div>
       <div>
       </div>
-{/* <UserList/> */}
       </div>
    
   )

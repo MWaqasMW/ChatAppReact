@@ -35,8 +35,8 @@ const Register = () => {
         email:email,
         password:Password,
         uid:user.uid
+        
       });
-      
       navigate('/');
       console.log("added")
       
@@ -61,11 +61,20 @@ const Register = () => {
 
 
     signInWithPopup(auth, provider)
-    .then((result) => {
+    .then(async(result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       const user = result.user;
-      console.log(result)
+
+      await setDoc(doc(db, "user", user.uid), {
+        displayName:user.displayName,
+        phoneNumber:user.phoneNumber,
+        photoURL:user.photoURL,
+        email:user.email,
+        uid:user.uid
+
+      });
+ await setDoc(doc(db, "user", user.uid),{})
       navigate('/profile');
     }).catch((error) => {
       const errorCode = error.code;
