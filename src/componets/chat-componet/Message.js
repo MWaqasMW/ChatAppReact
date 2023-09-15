@@ -2,10 +2,19 @@ import React, { useContext } from 'react'
 import { useUserInfo } from '../../contextapi/UserInfoContext';
 import { AuthContext } from '../../contextapi/Authcontext';
 import imgLogo from '../../images/profile-icon.png'
-
+import { useChats } from '../../contextapi/Chatscontext';
 const Message = () => {
 const {userData} = useContext(AuthContext)
 const { userInfo } = useUserInfo();
+const { chats } = useChats();
+
+
+
+
+
+
+
+
 const keys = Object.keys(userInfo);
 let User;
 if (keys.length === 0) {

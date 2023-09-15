@@ -25,30 +25,15 @@ const Profile = () => {
   const { currentUser, userData } = useContext(AuthContext)
   const { displayName, photoURL, email, uid,phoneNumber } = currentUser
   
-  
+  console.log(userData)
   const handleUpdate = async (e) => {
     e.preventDefault()
-    let imageUrl;
-    let userName;
-    let userNumber;
+  
+  const  imageUrl = e.target[0].files[0]
+   const userName = e.target[1].value
+   const userNumber = e.target[2].value
     try{
-    if(e.target[0].files[0] === "undefined"  ){
-
-console.log(e.target[0].files[0])
-       imageUrl = imgLogo
-       userName = e.target[1].value
-      userNumber = e.target[2].value
-      console.log(imageUrl)
-    }else{
-     imageUrl = e.target[0].files[0]
-     userName = e.target[1].value
-     userNumber = e.target[2].value
-    }
-    
-    
-    
-    
-
+  
 
     const storageRef = ref(storage, `images/${imageUrl}`)
 
@@ -90,6 +75,7 @@ console.log(e.target[0].files[0])
                 displayName: userName,
                 phoneNumber: userNumber,
                 photoURL: downloadURL,
+                uid:uid
               })
 
               
@@ -225,7 +211,7 @@ const handleChangePhoto=(e)=>{
 
         </div>
         <div className="card__title">{displayName ? displayName : (userData && userData.displayName)}</div>
-        <div className="card__subtitle">{email }</div>
+        <div className="card__subtitle">{email}</div>
         <div className="card__subtitle">{phoneNumber ? phoneNumber : (userData && userData.phoneNumber) }</div>
         <div className="btnSec">
           <NavLink to={"/home"}><img src={MessageBtn} alt='messageLogo' /></NavLink>

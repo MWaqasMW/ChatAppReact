@@ -7,7 +7,6 @@ import Message from './Message';
 import Input from './Input';
 import { useUserInfo } from '../../contextapi/UserInfoContext';
 import imgLogo from '../../images/userIcon.jpg'
-import { AuthContext } from '../../contextapi/Authcontext';
 const Chat=()=>{
   
   const { userInfo } = useUserInfo();
@@ -22,12 +21,6 @@ const Chat=()=>{
   }
 
   
-  
-  
-  
-  
-
-    console.log(User)
   return (
     <div className='chat'> 
     <div className='chatTop '>

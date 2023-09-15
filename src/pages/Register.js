@@ -21,22 +21,23 @@ const Register = () => {
    const Uname=e.target[0].value
    const Number=  e.target[1].value
    const email= e.target[2].value
-   const Password=  e.target[3].value
+   const password=  e.target[3].value
 
 
 
-  createUserWithEmailAndPassword(auth, email, Password)
-    .then(async(userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      await setDoc(doc(db, "user", user.uid), {
+   createUserWithEmailAndPassword(auth, email, password)
+   .then(async(userCredential) => {
+     // Signed in 
+     const user = userCredential.user;
+     await setDoc(doc(db, "user", user.uid), {
         displayName:Uname,
         phoneNumber:Number,
         email:email,
-        password:Password,
+        password:password,
         uid:user.uid
         
       });
+      console.log(user.uid)
       navigate('/');
       console.log("added")
       

@@ -21,15 +21,12 @@ const navigate = useNavigate();
     e.preventDefault()
     const email =e.target[0].value
     const password =e.target[1].value
-    console.log(email,password)
     
     signInWithEmailAndPassword(auth, email, password)
     .then(async(userCredential) => {
      
       const user = userCredential.user;
       console.log("user",user)
-
- await setDoc(doc(db, "user", user.uid),{})
       navigate('/profile')
     })
     .catch((error) => {

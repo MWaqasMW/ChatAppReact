@@ -6,15 +6,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthContextProvider } from './contextapi/Authcontext';
 import { UserInfoProvider } from './contextapi/UserInfoContext';
+import { ChatsProvider } from './contextapi/Chatscontext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-  <AuthContextProvider>
-    <UserInfoProvider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    </UserInfoProvider>
-  </AuthContextProvider>
+  <React.StrictMode>
+    <AuthContextProvider>
+      <UserInfoProvider>
+        <ChatsProvider>
+          <App />
+        </ChatsProvider>
+      </UserInfoProvider>
+    </AuthContextProvider>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

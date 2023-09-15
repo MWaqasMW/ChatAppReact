@@ -1,7 +1,7 @@
 import React, { useContext,useState,createContext,useEffect } from 'react'
 import { AuthContext } from '../../contextapi/Authcontext';
 import imgLogo from "../../images/userIcon.jpg"
-import { doc, updateDoc,getDoc, Timestamp,setDoc,collection, query, where, onSnapshot} from "firebase/firestore";
+import { doc, updateDoc,getDoc,setDoc,collection, query, where, onSnapshot, serverTimestamp} from "firebase/firestore";
 import { db } from '../../config/firebase';
 import { useUserInfo } from '../../contextapi/UserInfoContext';
 
@@ -12,7 +12,8 @@ import { useUserInfo } from '../../contextapi/UserInfoContext';
 function UserList() {
 
   const { setUserInfo } = useUserInfo();
-  const { allUser, userData} = useContext(AuthContext)
+  
+  const { allUser, userData, currentUser} = useContext(AuthContext)
   const [userInfo, getUserInfo] =useState({})
   // const {data , setData}=useState({userData})
 
@@ -24,10 +25,9 @@ function UserList() {
   }, [userInfo]);
   
   const handleSelect = async({user}) => {
-    
     const {uid, displayName,photoURL} = user
+    console.log(uid,displayName,photoURL)
     const combinedId = userData.uid > uid ? userData.uid + uid : uid + userData.uid
-    console.log(userData.uid);
     try{
       
       try{
@@ -45,30 +45,22 @@ function UserList() {
         
         
         
-        const docRef = doc(db, "userChats", combinedId);
+        const docRef = doc(db, "userChats", currentUser.uid);
         
-  
-  await setDoc(docRef, {
-    chatId: combinedId,
-    UserInfo: {
-      uid: userData.uid,
-          photoURL: userData.photoURL?userData.photoURL:`https://firebasestorage.googleapis.com/v0/b/chatapponreact.appspot.com/o/images%2F%5Bobject%20File%5D?alt=media&token=7fd853ab-4a9e-4d71-b17c-91ebeb34d836`,
-          displayName: userData.displayName
-        },
-        SelectUserInfo: {
-          uid,
-          displayName,
-          photoURL:photoURL?photoURL:`https://firebasestorage.googleapis.com/v0/b/chatapponreact.appspot.com/o/images%2F%5Bobject%20File%5D?alt=media&token=7fd853ab-4a9e-4d71-b17c-91ebeb34d836`,
-
+        await setDoc(docRef, {
+          chatId: combinedId,
+            SelectUserInfo: {
+            uid,
+            displayName,
+            photoURL: photoURL || imgLogo
+          },
         }
-      })
+      )
       console.log("document Update")
-      
+  
       
     }
-    //   else {
-      //     console.log("No such document!");
-      //  }
+
       
       catch(err){
         console.log(err)
@@ -77,9 +69,6 @@ function UserList() {
     };
 
 
-    // if (loading) {
-    //   return <div>Loading...</div>; // You can display a loading indicator
-    // }
 
       return (
         <div>
